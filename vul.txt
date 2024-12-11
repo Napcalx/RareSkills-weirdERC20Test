@@ -1,0 +1,13 @@
+# Issues in the Contract
+
+## 1. No Logging on Freeze/Unfreeze Actions
+There are no events emitted when accounts are frozen or unfrozen, making it harder to track or audit such actions.
+
+## 2. Frozen Accounts Can Still Burn Tokens
+The `burn` function does not check the `isFrozen` mapping, allowing frozen accounts to still burn their tokens.
+
+## 3. Bypass via Proxies or `delegatecall`
+If another contract uses `delegatecall` to interact with this contract, it may bypass the `isFrozen` check by altering the `msg.sender`.
+
+## 4. Insufficient `transferFrom` Check
+The `transferFrom` function only checks `msg.sender`, but not the `from` account. A frozen `from` account can still have tokens transferred on their behalf.
